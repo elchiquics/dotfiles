@@ -10,6 +10,7 @@ call plug#begin('~\vimfiles\plugged')
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
 
 Plug 'SirVer/ultisnips'
+Plug 'tpope/vim-fugitive'
 Plug 'chiel92/vim-autoformat'
 Plug 'easymotion/vim-easymotion'
 Plug 'frazrepo/vim-rainbow'
