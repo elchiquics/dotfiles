@@ -7,6 +7,9 @@
 "Plugins{{{
 call plug#begin('~\vimfiles\plugged')
 
+"List <Leader> mappings
+Plug 'ktonga/vim-follow-my-lead'
+
 "Tex shortcuts
 Plug 'brennier/quicktex'
 
@@ -60,6 +63,9 @@ Plug 'tyru/restart.vim'
 
 "ViFM integration
 Plug 'vifm/vifm.vim'
+
+"Move cells or arguments
+Plug 'elchiquics/sideways.vim'
 
 call plug#end()
 
@@ -203,47 +209,54 @@ let g:quicktex_math                       = {
 "Options{{{
 
 set autochdir
-set background  =light
-set backspace   =2
 set backup
-set backupdir   =~/vimfiles/files/backup
-set cmdheight   =2
-set conceallevel=2
-set directory   =~/vimfiles/files/swapdir
-set encoding    =utf-8
 set expandtab
-set fileencoding=utf-8
-set foldmethod  =marker
 set hlsearch
 set ignorecase
 set incsearch
 set nocompatible
 set noerrorbells
-set path        =~/Documents/,~/Documents/TeX/*/
-set path       +=~/Desktop/
-set path       +=~/Documents/todos/
-set path       +=~/Downloads/
+set number
 set relativenumber
-set renderoptions=type:directx
-set shiftwidth  =2
-set shortmess   =at
 set splitbelow
 set splitright
-set t_Co        =256
-set tabstop     =2
 set termguicolors
-set undodir     =~/vimfiles/undodir
 set undofile
-set belloff     =all
+
+set background   =light
+set backspace    =2
+set backupdir    =~/vimfiles/files/backup
+set belloff      =all
+set cmdheight    =2
+set conceallevel =2
+set directory    =~/vimfiles/files/swapdir
+set encoding     =utf-8
+set fileencoding =utf-8
+set foldmethod   =marker
+set path         =~/Documents/,~/Documents/TeX/*/
+set path        +=~/Desktop/
+set path        +=~/Documents/todos/
+set path        +=~/Downloads/
+set renderoptions=type:directx
+set shiftwidth   =2
+set shortmess    =at
+set t_Co         =256
+set tabstop      =2
+set undodir      =~/vimfiles/undodir
 
 "}}}
 "Autocommands{{{
+
+"Use q to close help and netrw
+autocmd FileType netrw nnoremap <buffer> <silent> q :bdelete<CR>
+autocmd FileType help nnoremap <buffer> <silent> q :bdelete<CR>
+
 "TextWith for vimwiki
 autocmd FileType vimwiki set textwidth=80
 
 "Move Cells for kanban
-autocmd BufRead kanban.wiki nnoremap <C-Right> T\|vt\|ygvr<Space>f\|a<C-R>0<Esc>
-autocmd BufRead kanban.wiki nnoremap <C-Left> T\|vt\|ygvr<Space>F\|i<C-R>0<Esc>
+"autocmd BufRead kanban.wiki nmap <C-Right> di\lpgq1
+"autocmd BufRead kanban.wiki nmap <C-Left> di\F\|Pgq1
 
 "VimWiki template
 autocmd BufNewFile ~/vimwiki/diary/*.wiki 0r ~/vimfiles/templates/template.wiki
@@ -253,6 +266,7 @@ autocmd BufNewFile *.tex 0r ~/vimfiles/templates/template.tex
 
 "Markdown to PDF map
 autocmd FileType markdown nnoremap <Leader>ll :call PandocToPDF()<CR>
+
 "}}}
 "Mappings{{{
 
@@ -284,17 +298,28 @@ inoremap <F5> = <C-R>=strftime("%d de %b del %Y") =<CR>
 " Source the dotfiles
 nnoremap <Leader>, :source ~/.vimrc<CR>
 
+"Edit .gvimrc in new tab
 nnoremap <Leader>O :tabe ~/.gvimrc<CR>
-nnoremap <Leader>c :close!<CR>
+
+"Edit .vimrc in new tab
 nnoremap <Leader>o :tabe ~/.vimrc<CR>
+
+"Paste from system clipboard
 nnoremap <Leader>p "+p
-nnoremap <Leader>t :tabe<CR>
+
+"Yank to system clipboard
 nnoremap <Leader>y "+y
+
+"Coherent behavior of Y
 nnoremap Y y$
 
 "Move between buffers
 nnoremap [f :bnext<CR>
 nnoremap ]f :bprevious<CR>
+
+"Move cells in tables
+nnoremap <C-Right> :SidewaysRight<CR>
+nnoremap <C-Left> :SidewaysLeft<CR>
 
 "}}}
 "Misc Options{{{
