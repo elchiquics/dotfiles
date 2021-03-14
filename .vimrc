@@ -66,6 +66,10 @@ Plug 'vifm/vifm.vim'
 
 "Move cells or arguments
 Plug 'elchiquics/sideways.vim'
+"Plug 'AndrewRadev/sideways.vim'
+
+"Smart i_C-Y and i_C-E
+Plug 'emugel/vim-ictrlye'
 
 call plug#end()
 
@@ -79,7 +83,7 @@ let g:netrw_fastbrowse                    = 0
 let g:netrw_liststyle                     = 3
 let g:netrw_winsize                       = 20
 let g:rainbow_active                      = 1
-let g:tex_conceal_frac                    =1
+let g:tex_conceal_frac                    = 1
 let g:tex_conceal                         ="abdgms"
 let g:tex_flavor                          ="latex"
 let g:tex_subscripts                      ="[0-9aehijklmnoprstuvx,+-/().]"
@@ -144,7 +148,7 @@ let g:quicktex_math                       = {
                                           \ 'c.'    : "\\cdots ",
                                           \ 'v.'    : "\\vdots ",
                                           \ 'd.'    : "\\ddots ",
-                                          \ '..'    : ",\\ldots, ",
+                                          \ '..'    : ", \\ldots , ",
                                           \ 'max'   : "\\max\\{ <+++> \\} <++>",
                                           \ 'min'   : "\\min\\{ <+++> \\} <++>",
                                           \ 'leq'   : "\\leq ",
@@ -223,7 +227,7 @@ set splitright
 set termguicolors
 set undofile
 
-set background   =light
+set background   =dark
 set backspace    =2
 set backupdir    =~/vimfiles/files/backup
 set belloff      =all
@@ -233,9 +237,7 @@ set directory    =~/vimfiles/files/swapdir
 set encoding     =utf-8
 set fileencoding =utf-8
 set foldmethod   =marker
-set path         =~/Documents/,~/Documents/TeX/*/
-set path        +=~/Desktop/
-set path        +=~/Documents/todos/
+set path         =~/Desktop/
 set path        +=~/Downloads/
 set renderoptions=type:directx
 set shiftwidth   =2
@@ -247,19 +249,25 @@ set undodir      =~/vimfiles/undodir
 "}}}
 "Autocommands{{{
 
-"Use q to close help and netrw
+"Use q to close netrw
 autocmd FileType netrw nnoremap <buffer> <silent> q :bdelete<CR>
+
+"Mappings for help files
 autocmd FileType help nnoremap <buffer> <silent> q :bdelete<CR>
+autocmd FileType help nmap <buffer> u <C-u>
+autocmd FileType help nmap <buffer> f <C-f>
+autocmd FileType help nmap <buffer> b <C-b>
 
 "TextWith for vimwiki
 autocmd FileType vimwiki set textwidth=80
 
-"Move Cells for kanban
-"autocmd BufRead kanban.wiki nmap <C-Right> di\lpgq1
-"autocmd BufRead kanban.wiki nmap <C-Left> di\F\|Pgq1
+"Kanban press q to quit window
+autocmd BufRead kanban.wiki nnoremap <buffer> <silent> q :bdelete<CR>
 
 "VimWiki template
-autocmd BufNewFile ~/vimwiki/diary/*.wiki 0r ~/vimfiles/templates/template.wiki
+autocmd BufNewFile ~/vimwiki/diary/*.wiki 0r ~/vimfiles/templates/daily_template.wiki
+autocmd BufNewFile ~/vimwiki/bullet_journal/weekly/*.wiki 0r ~/vimfiles/templates/weekly_template.wiki
+autocmd BufNewFile ~/vimwiki/bullet_journal/monthly/*.wiki 0r ~/vimfiles/templates/monthly_template.wiki
 
 "TeX Template
 autocmd BufNewFile *.tex 0r ~/vimfiles/templates/template.tex
@@ -270,30 +278,11 @@ autocmd FileType markdown nnoremap <Leader>ll :call PandocToPDF()<CR>
 "}}}
 "Mappings{{{
 
-" Ctrl-j/k deletes blank line below/above, and Alt-j/k inserts.
-nnoremap <silent><C-j> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
-nnoremap <silent><C-k> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
-nnoremap <silent><A-j> :set paste<CR>m`o<Esc>``:set nopaste<CR>
-nnoremap <silent><A-k> :set paste<CR>m`O<Esc>``:set nopaste<CR>
+"Show Bullet Journal
+nnoremap <Leader>B :call BulletJournal()<CR>
 
-" Abre KanBan
-nnoremap <Leader>wk :e! ~/vimwiki/kanban.wiki<CR>
-
-"Move lines above or down
-inoremap <A-Down> <Esc>:m .+1<CR>==gi
-inoremap <A-Up> <Esc>:m .-2<CR>==gi
-vnoremap <A-Down> :m '>+1<CR>gv=gv
-vnoremap <A-Up> :m '<-2<CR>gv=gv
-nnoremap <A-Down> :m .+1<CR>==
-nnoremap <A-Up> :m .-2<CR>==
-
-"Put date or hour
-nnoremap <F6> "=strftime("%H:%M")<CR>P
-nnoremap <F5> "=strftime("%d de %b del %Y")<CR>P
-
-"Insert on VimWiki date or hour
-inoremap <F6> = <C-R>=strftime("%H:%M")<CR> =<CR>
-inoremap <F5> = <C-R>=strftime("%d de %b del %Y") =<CR>
+"Show Schedule
+nnoremap <Leader>E :call ShowSchedule()<CR>
 
 " Source the dotfiles
 nnoremap <Leader>, :source ~/.vimrc<CR>
@@ -313,23 +302,115 @@ nnoremap <Leader>y "+y
 "Coherent behavior of Y
 nnoremap Y y$
 
-"Move between buffers
-nnoremap [f :bnext<CR>
-nnoremap ]f :bprevious<CR>
+" Abre KanBan
+nnoremap <Leader>K :call KanBan()<CR>
 
-"Move cells in tables
+"Vimwiki monthly log
+nnoremap <Leader>M :call MonthlyLog()<CR>
+
+"Vimwiki weekly log
+nnoremap <Leader>W :call WeeklyLog()<CR>
+
+" Ctrl-j/k deletes blank line below/above, and Alt-j/k inserts.
+nnoremap <silent><C-j> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
+nnoremap <silent><C-k> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
+nnoremap <silent><A-j> :set paste<CR>m`o<Esc>``:set nopaste<CR>
+nnoremap <silent><A-k> :set paste<CR>m`O<Esc>``:set nopaste<CR>
+
+"Move lines above or down
+inoremap <A-Down> <Esc>:m .+1<CR>==gi
+inoremap <A-Up> <Esc>:m .-2<CR>==gi
+vnoremap <A-Down> :m '>+1<CR>gv=gv
+vnoremap <A-Up> :m '<-2<CR>gv=gv
+nnoremap <A-Down> :m .+1<CR>==
+nnoremap <A-Up> :m .-2<CR>==
+
+"Put hour
+nnoremap <Leader>H "=strftime("%H:%M")<CR>P
+
+"Put date
+nnoremap <Leader>D "=strftime("%d de %b del %Y")<CR>P
+
+"Insert on VimWiki hour
+inoremap <F6> = <C-R>=strftime("%H:%M")<CR> =<CR>
+
+"Insert on VimWiki date
+inoremap <F5> = <C-R>=strftime("%d de %b del %Y") =<CR>
+
+"Move between buffers
+nnoremap [f :bprevious<CR>
+nnoremap ]f :bnext<CR>
+
+"Move arguments with sideways.vim
 nnoremap <C-Right> :SidewaysRight<CR>
-nnoremap <C-Left> :SidewaysLeft<CR>
+nnoremap <C-Left>  :SidewaysLeft<CR>
 
 "}}}
 "Misc Options{{{
 
-colorscheme seoul256-light
+colorscheme seoul256
 syntax enable
 filetype plugin on
 
 "}}}
 "Functions{{{
+
+"Bullet Journal{{{
+function! BulletJournal()
+  silent execute 'tabedit'
+  silent execute 'VimwikiMakeDiaryNote'
+  silent execute 'vsplit'
+  silent execute 'call WeeklyLog()'
+  silent execute 'split'
+  silent execute 'call MonthlyLog()'
+endfunction
+"}}}
+
+"Schoolar Schedule{{{
+"Argument with a letter
+function! ShowSchedule()
+  execute 'split ~/vimwiki/horario.wiki'
+  nnoremap <buffer><silent> q :bdelete<CR>
+endfunction
+"}}}
+"Kanban Three Buffers{{{
+function! KanBan()
+  silent execute 'tabedit ~/vimwiki/espera.wiki'
+  silent execute 'vsplit ~/vimwiki/en_progreso.wiki'
+  silent execute 'vsplit ~/vimwiki/hecho.wiki'
+  nnoremap <C-l> dd<C-w>lGp
+  nnoremap <C-h> dd<C-w>hGp
+endfunction
+"}}}
+
+"Bullet Journal Monthly and Weekly Logs{{{
+
+function! MonthlyLog()
+  let filename = strftime("%Y-%m") . '.wiki'
+  execute 'edit! ~/vimwiki/bullet_journal/monthly/' . filename
+endfunction
+
+
+function! WeeklyLog()
+  let day = strftime("%d")
+  let month = strftime("%m")
+  let year = strftime("%Y")
+
+  if day >= 1 && day < 7
+    let num_of_week = 1
+  elseif day >= 7 && day < 14
+    let num_of_week = 2
+  elseif day >= 14 && day < 21
+    let num_of_week = 3
+  elseif day >= 21
+    let num_of_week = 4
+  endif
+
+  let filename = year . '-' . month . '-' . num_of_week . '.wiki'
+  execute 'edit! ~/vimwiki/bullet_journal/weekly/' . filename
+endfunction
+
+"}}}
 " Label Tex{{{
 function! LabelTex(start,end)
   for i in range(a:start,a:end)
