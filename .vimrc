@@ -213,7 +213,6 @@ let g:quicktex_math                       = {
 "Options{{{
 
 set autochdir
-set backup
 set expandtab
 set hlsearch
 set ignorecase
@@ -225,15 +224,12 @@ set relativenumber
 set splitbelow
 set splitright
 set termguicolors
-set undofile
 
 set background   =dark
 set backspace    =2
-set backupdir    =~/vimfiles/files/backup
 set belloff      =all
 set cmdheight    =2
 set conceallevel =2
-set directory    =~/vimfiles/files/swapdir
 set encoding     =utf-8
 set fileencoding =utf-8
 set foldmethod   =marker
@@ -244,7 +240,6 @@ set shiftwidth   =2
 set shortmess    =at
 set t_Co         =256
 set tabstop      =2
-set undodir      =~/vimfiles/undodir
 
 "}}}
 "Autocommands{{{
@@ -348,7 +343,7 @@ nnoremap <C-Left>  :SidewaysLeft<CR>
 "}}}
 "Misc Options{{{
 
-colorscheme seoul256
+colorscheme gruvbox
 syntax enable
 filetype plugin on
 
@@ -446,7 +441,4 @@ function! PythonCode()
 endfunction
 autocmd FileType python nnoremap <F5> :call PythonCode()<CR>
 " }}}
-"}}}
-"Abbrevations{{{
-iabbrev :name: García Bernal Axel
 "}}}
