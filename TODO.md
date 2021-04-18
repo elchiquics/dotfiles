@@ -1,0 +1,1 @@
+- [ ] Create batchfile to setup my config on Windows
