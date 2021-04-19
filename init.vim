@@ -7,15 +7,6 @@
 "Plugins{{{
 call plug#begin('~/AppData/Local/nvim/plugged')
 
-" firenvim
-Plug 'glacambre/firenvim', {'do': {_ -> firenvim#install(0)}}
-
-" For tags management
-Plug 'ludovicchabant/vim-gutentags'
-
-" CSV plugin
-Plug 'chrisbra/csv.vim'
-
 "Org-mode syntax highlighting
 Plug 'axvr/org.vim'
 
@@ -39,12 +30,12 @@ Plug 'frazrepo/vim-rainbow'
 
 "Themes
 Plug 'ghifarit53/tokyonight-vim',  {'on' : 'colorscheme'}
-Plug 'joshdick/onedark.vim',  {'on' : 'colorscheme'}
-Plug 'junegunn/seoul256.vim',  {'on' : 'colorscheme'}
-Plug 'morhetz/gruvbox',  {'on' : 'colorscheme'}
-Plug 'whatyouhide/vim-gotham',  {'on' : 'colorscheme'}
-Plug 'reedes/vim-colors-pencil',  {'on' : 'colorscheme'}
-Plug 'axvr/photon.vim',  {'on' : 'colorscheme'}
+Plug 'joshdick/onedark.vim'     ,  {'on' : 'colorscheme'}
+Plug 'junegunn/seoul256.vim'    ,  {'on' : 'colorscheme'}
+Plug 'morhetz/gruvbox'          ,  {'on' : 'colorscheme'}
+Plug 'whatyouhide/vim-gotham'   ,  {'on' : 'colorscheme'}
+Plug 'reedes/vim-colors-pencil' ,  {'on' : 'colorscheme'}
+Plug 'axvr/photon.vim'          ,  {'on' : 'colorscheme'}
 
 "Focus writing
 Plug 'junegunn/goyo.vim'
@@ -55,9 +46,9 @@ Plug 'lervag/vimtex'
 "Substitute & global visualization
 Plug 'markonm/traces.vim'
 
-"Calendar, diary & wiki
+"Calenda diary & wiki
 Plug 'mattn/calendar-vim'
-Plug 'vimwiki/vimwiki',  {'branch' : 'dev'}
+Plug 'vimwiki/vimwiki'          ,  {'branch' : 'dev'}
 
 "Make comments
 Plug 'preservim/nerdcommenter'
@@ -69,13 +60,13 @@ Plug 'romainl/vim-cool'
 Plug 'tommcdo/vim-lion'
 
 "Git integration
-Plug 'tpope/vim-fugitive',  {'on' : 'Git'}
+Plug 'tpope/vim-fugitive'       ,  {'on' : 'Git'}
 
 "Quoting and parenthesis easy
 Plug 'tpope/vim-surround'
 
 "Restart vim
-Plug 'tyru/restart.vim',  {'on' : 'Restart'}
+Plug 'tyru/restart.vim'         ,  {'on' : 'Restart'}
 
 "ViFM integration
 Plug 'vifm/vifm.vim'
@@ -266,7 +257,7 @@ set shiftwidth   =2
 set undodir      =~/vimfiles/undodir/
 set shortmess    =at
 set tabstop      =2
-set guifont=SauceCodePro\ Nerd\ Font\ Mono:h14
+set guifont=Hack\ NF:h14
 
 "}}}
 "Autocommands{{{
@@ -279,9 +270,6 @@ autocmd FileType help nnoremap <buffer> <silent> q :bdelete<CR>
 
 "TextWith for vimwiki
 autocmd FileType vimwiki set textwidth=80
-
-"Kanban press q to quit window
-autocmd BufRead kanban.wiki nnoremap <buffer> <silent> q :bdelete<CR>
 
 "TeX Template
 autocmd BufNewFile *.tex 0r ~/vimfiles/templates/template.tex
@@ -335,7 +323,7 @@ inoremap <F5> = <C-R>=strftime("%d de %b del %Y") =<CR>
 
 "Move between buffers
 nnoremap [f :bprevious<CR>
-nnoremap]f :bnext<CR>
+nnoremap ]f :bnext<CR>
 
 "Move arguments with sideways.vim
 nnoremap <C-Right> :SidewaysRight<CR>
@@ -344,7 +332,7 @@ nnoremap <C-Left>  :SidewaysLeft<CR>
 "}}}
 "Misc Options{{{
 
-colorscheme photon
+colorscheme gruvbox
 syntax enable
 filetype plugin on
 
@@ -359,13 +347,6 @@ function! CopyMatches(reg)
   execute 'let @'.reg.' = join(hits, "\n") . "\n"'
 endfunction
 command! -register CopyMatches call CopyMatches(<q-reg>)
-"}}}
-
-"Schoolar Schedule{{{
-function! ShowSchedule()
-  execute 'split ~/vimwiki/horario.wiki'
-  nnoremap <buffer><silent> q :bdelete<CR>
-endfunction
 "}}}
 
 "Format Math and Text TeX{{{
@@ -385,11 +366,4 @@ function! PandocToPDF()
   silent execute '!mupdf ' . expand('%:r') . '.pdf'
 endfunction
 "}}}
-"}}}
-"Firenvim config{{{
-if exists('g:started_by_firenvim')
-  set laststatus=0
-else
-  set laststatus=2
-endif
 "}}}
