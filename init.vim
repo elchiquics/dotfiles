@@ -1,11 +1,30 @@
-"       (_)
-" __   ___ _ __ ___  _ __ ___
-" \ \ / / | '_ ` _ \| '__/ __|
-"  \ V /| | | | | | | | | (__
-" (_)_/ |_|_| |_| |_|_|  \___|
+"            _
+"  _       _( )_
+" (_) ___ (_)  _)  _   _(_) ___ ___
+" | |  _  \ | |   ( ) ( ) |  _   _  \
+" | | ( ) | | |_ _| \_/ | | ( ) ( ) |
+" (_)_) (_)_)\__)_)\___/(_)_) (_) (_)
 
 "Plugins{{{
 call plug#begin('~/AppData/Local/nvim/plugged')
+
+"Custom textobjs
+Plug 'kana/vim-textobj-user'
+
+"Vim entire buffer text object
+Plug 'kana/vim-textobj-entire'
+
+"Vim-pandoc
+Plug 'vim-pandoc/vim-pandoc'
+
+"Vim-pandoc-syntax
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
+"Make <C-A> work properly with timestamps
+Plug 'tpope/vim-speeddating'
+
+"Todo.txt task manager
+Plug 'freitass/todo.txt-vim'
 
 "Org-mode syntax highlighting
 Plug 'axvr/org.vim'
@@ -29,13 +48,13 @@ Plug 'chiel92/vim-autoformat'
 Plug 'frazrepo/vim-rainbow'
 
 "Themes
-Plug 'ghifarit53/tokyonight-vim',  {'on' : 'colorscheme'}
-Plug 'joshdick/onedark.vim'     ,  {'on' : 'colorscheme'}
-Plug 'junegunn/seoul256.vim'    ,  {'on' : 'colorscheme'}
-Plug 'morhetz/gruvbox'          ,  {'on' : 'colorscheme'}
-Plug 'whatyouhide/vim-gotham'   ,  {'on' : 'colorscheme'}
-Plug 'reedes/vim-colors-pencil' ,  {'on' : 'colorscheme'}
-Plug 'axvr/photon.vim'          ,  {'on' : 'colorscheme'}
+Plug 'ghifarit53/tokyonight-vim'
+Plug 'joshdick/onedark.vim'
+Plug 'junegunn/seoul256.vim'
+Plug 'morhetz/gruvbox'
+Plug 'whatyouhide/vim-gotham'
+Plug 'reedes/vim-colors-pencil'
+Plug 'axvr/photon.vim'
 
 "Focus writing
 Plug 'junegunn/goyo.vim'
@@ -60,13 +79,10 @@ Plug 'romainl/vim-cool'
 Plug 'tommcdo/vim-lion'
 
 "Git integration
-Plug 'tpope/vim-fugitive'       ,  {'on' : 'Git'}
+Plug 'tpope/vim-fugitive'
 
 "Quoting and parenthesis easy
 Plug 'tpope/vim-surround'
-
-"Restart vim
-Plug 'tyru/restart.vim'         ,  {'on' : 'Restart'}
 
 "ViFM integration
 Plug 'vifm/vifm.vim'
@@ -88,21 +104,24 @@ call plug#end()
 "}}}
 "Variables{{{
 
-let g:netrw_banner                        = 0
-let g:airline_powerline_fonts             = 1
-let g:netrw_browse_split                  = 4
-let g:netrw_fastbrowse                    = 0
-let g:netrw_liststyle                     = 3
-let g:netrw_winsize                       = 20
-let g:rainbow_active                      = 1
-let g:tex_conceal_frac                    = 1
-let g:tex_conceal                         ="abdgms"
-let g:tex_flavor                          ="latex"
-let g:tex_subscripts                      ="[0-9aehijklmnoprstuvx,+-/().]"
-let g:tex_superscripts                    ="[0-9a-zA-W.,:;+-<>/()=]"
-let g:vimtex_view_general_viewer          ="SumatraPDF"
-let mapleader                             =" "
-let maplocalleader                        =" "
+let g:pandoc#spell#enabled                 = 0
+let g:netrw_banner                         = 0
+let g:airline#extensions#tabline#enabled   = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline_powerline_fonts              = 1
+let g:netrw_browse_split                   = 4
+let g:netrw_fastbrowse                     = 0
+let g:netrw_liststyle                      = 3
+let g:netrw_winsize                        = 20
+let g:rainbow_active                       = 1
+let g:tex_conceal_frac                     = 1
+let g:tex_conceal                          ="abdgms"
+let g:tex_flavor                           ="latex"
+let g:tex_subscripts                       ="[0-9aehijklmnoprstuvx,+-/().]"
+let g:tex_superscripts                     ="[0-9a-zA-W.,:;+-<>/()=]"
+let g:vimtex_view_general_viewer           ="SumatraPDF"
+let mapleader                              =" "
+let maplocalleader                         =" "
 let g:vimtex_compiler_latexmk_engines     = {
       \ '_': '-pdflatex',
 \}
@@ -257,7 +276,7 @@ set shiftwidth   =2
 set undodir      =~/vimfiles/undodir/
 set shortmess    =at
 set tabstop      =2
-set guifont=Hack\ NF:h14
+set guifont=Hack\ NF:h16
 
 "}}}
 "Autocommands{{{
@@ -332,7 +351,7 @@ nnoremap <C-Left>  :SidewaysLeft<CR>
 "}}}
 "Misc Options{{{
 
-colorscheme gruvbox
+colorscheme gotham
 syntax enable
 filetype plugin on
 
