@@ -1,5 +1,5 @@
 "            _
-"  _       _( )_
+"  _       _( )_         _
 " (_) ___ (_)  _)  _   _(_) ___ ___
 " | |  _  \ | |   ( ) ( ) |  _   _  \
 " | | ( ) | | |_ _| \_/ | | ( ) ( ) |
@@ -8,26 +8,35 @@
 "Plugins{{{
 call plug#begin('~/AppData/Local/nvim/plugged')
 
-"Custom textobjs
+"Highlight words
+Plug 'lfv89/vim-interestingwords'
+
+"Delete all the other buffers except the current buffer
+Plug 'schickling/vim-bufonly'
+
+"Text objects{{{
 Plug 'kana/vim-textobj-user'
 
 "Vim entire buffer text object
-Plug 'kana/vim-textobj-entire'
+Plug 'elchiquics/vim-textobj-global'
 
-"Vim-pandoc
+"Function text object
+Plug 'kana/vim-textobj-function'
+
+"Fold text object
+Plug 'kana/vim-textobj-fold'
+"}}}
+"Vim-pandoc{{{
 Plug 'vim-pandoc/vim-pandoc'
-
 "Vim-pandoc-syntax
 Plug 'vim-pandoc/vim-pandoc-syntax'
+"}}}
 
 "Make <C-A> work properly with timestamps
 Plug 'tpope/vim-speeddating'
 
 "Todo.txt task manager
 Plug 'freitass/todo.txt-vim'
-
-"Org-mode syntax highlighting
-Plug 'axvr/org.vim'
 
 "List <Leader> mappings
 Plug 'ktonga/vim-follow-my-lead'
@@ -38,16 +47,13 @@ Plug 'tpope/vim-repeat'
 "Visualize undotree
 Plug 'mbbill/undotree'
 
-"Tex shortcuts
-Plug 'brennier/quicktex'
-
 "Text formatter
 Plug 'chiel92/vim-autoformat'
 
 "Color rainbow brackets
 Plug 'frazrepo/vim-rainbow'
 
-"Themes
+"Themes{{{
 Plug 'ghifarit53/tokyonight-vim'
 Plug 'joshdick/onedark.vim'
 Plug 'junegunn/seoul256.vim'
@@ -55,17 +61,21 @@ Plug 'morhetz/gruvbox'
 Plug 'whatyouhide/vim-gotham'
 Plug 'reedes/vim-colors-pencil'
 Plug 'axvr/photon.vim'
+"}}}
 
 "Focus writing
 Plug 'junegunn/goyo.vim'
 
-"TeX tools
+"TeX tools{{{
 Plug 'lervag/vimtex'
+"Tex shortcuts
+Plug 'brennier/quicktex'
+"}}}
 
 "Substitute & global visualization
 Plug 'markonm/traces.vim'
 
-"Calenda diary & wiki
+"Calendar diary & wiki
 Plug 'mattn/calendar-vim'
 Plug 'vimwiki/vimwiki'          ,  {'branch' : 'dev'}
 
@@ -103,36 +113,43 @@ call plug#end()
 
 "}}}
 "Variables{{{
-
 let g:pandoc#spell#enabled                 = 0
-let g:netrw_banner                         = 0
+let g:rainbow_active                       = 1
+"Airline{{{
 let g:airline#extensions#tabline#enabled   = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline_powerline_fonts              = 1
+"}}}
+"Netrw{{{
+let g:netrw_banner                         = 0
 let g:netrw_browse_split                   = 4
 let g:netrw_fastbrowse                     = 0
 let g:netrw_liststyle                      = 3
 let g:netrw_winsize                        = 20
-let g:rainbow_active                       = 1
+"}}}
+"VimTeX{{{
 let g:tex_conceal_frac                     = 1
 let g:tex_conceal                          ="abdgms"
 let g:tex_flavor                           ="latex"
 let g:tex_subscripts                       ="[0-9aehijklmnoprstuvx,+-/().]"
 let g:tex_superscripts                     ="[0-9a-zA-W.,:;+-<>/()=]"
 let g:vimtex_view_general_viewer           ="SumatraPDF"
-let mapleader                              =" "
-let maplocalleader                         =" "
 let g:vimtex_compiler_latexmk_engines     = {
-      \ '_': '-pdflatex',
-\}
+      \ '_': '-xelatex',
+      \}
 let g:vimtex_quickfix_ignore_filters      = [
       \ 'LaTeX Font Warning',
       \ 'Overfull',
       \ 'Underfull',
       \ 'Package babel Warning',
       \ 'only floats',
-\]
-
+      \]
+"}}}
+"Leader{{{
+let mapleader                              =" "
+let maplocalleader                         =" "
+"}}}
+"QuickTeX{{{
 let g:quicktex_tex                        = {
       \ ' '   : "\<ESC>/<+.*+>\<CR>\"_c/+>/e\<CR>",
       \ 'ite' : "\\item ",
@@ -240,12 +257,11 @@ let g:quicktex_math                       = {
       \ 'Psi'   : "\\Psi ",
       \ 'Ome'   : "\\Omega ",
       \}
-
+"}}}
 "}}}
 "Options{{{
 
 set autochdir
-set noshowmode
 set autowrite
 set expandtab
 set hlsearch
@@ -253,6 +269,7 @@ set ignorecase
 set incsearch
 set nobackup
 set noerrorbells
+set noshowmode
 set noswapfile
 set number
 set relativenumber
@@ -280,65 +297,39 @@ set guifont=Hack\ NF:h16
 
 "}}}
 "Autocommands{{{
-
-"Use q to close netrw
+augroup Custom
+autocmd!
+autocmd FileType tex cabbrev css VimtexCompileSS
 autocmd FileType netrw nnoremap <buffer> <silent> q :bdelete<CR>
-
-"Mappings for help files
 autocmd FileType help nnoremap <buffer> <silent> q :bdelete<CR>
-
-"TextWith for vimwiki
 autocmd FileType vimwiki set textwidth=80
-
-"TeX Template
 autocmd BufNewFile *.tex 0r ~/vimfiles/templates/template.tex
-
-"Markdown to PDF map
 autocmd FileType markdown nnoremap <Leader>ll :call PandocToPDF()<CR>
-
+augroup END
 "}}}
 "Mappings{{{
 
-" Source the dotfiles
-nnoremap <Leader>, :source ~/AppData/Local/nvim/init.vim<CR>
-
-"Edit .vimrc in new tab
-nnoremap <Leader>o :tabe ~/AppData/Local/nvim/init.vim<CR>
-
 "Paste from system clipboard
 nnoremap <Leader>p "+p
-
 "Yank to system clipboard
 nnoremap <Leader>y "+y
-
 "Coherent behavior of Y
 nnoremap Y y$
 
-" Ctrl-j/k deletes blank line below/above, and Alt-j/k inserts.
+"Insert blank lines{{{
 nnoremap <silent><C-j> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
 nnoremap <silent><C-k> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
 nnoremap <silent><A-j> :set paste<CR>m`o<Esc>``:set nopaste<CR>
 nnoremap <silent><A-k> :set paste<CR>m`O<Esc>``:set nopaste<CR>
-
-"Move lines above or down
+"}}}
+"Move lines above or down{{{
 inoremap <A-Down> <Esc>:m .+1<CR>==gi
 inoremap <A-Up> <Esc>:m .-2<CR>==gi
 vnoremap <A-Down> :m '>+1<CR>gv=gv
 vnoremap <A-Up> :m '<-2<CR>gv=gv
 nnoremap <A-Down> :m .+1<CR>==
 nnoremap <A-Up> :m .-2<CR>==
-
-"Put hour
-nnoremap <Leader>H "=strftime("%H:%M")<CR>P
-
-"Put date
-nnoremap <Leader>D "=strftime("%d de %b del %Y")<CR>P
-
-"Insert on VimWiki hour
-inoremap <F6> = <C-R>=strftime("%H:%M")<CR> =<CR>
-
-"Insert on VimWiki date
-inoremap <F5> = <C-R>=strftime("%d de %b del %Y") =<CR>
+"}}}
 
 "Move between buffers
 nnoremap [f :bprevious<CR>
@@ -350,14 +341,11 @@ nnoremap <C-Left>  :SidewaysLeft<CR>
 
 "}}}
 "Misc Options{{{
-
-colorscheme gotham
+colorscheme gruvbox
 syntax enable
 filetype plugin on
-
 "}}}
 "Functions{{{
-
 "Copy matches{{{
 function! CopyMatches(reg)
   let hits = []
@@ -367,10 +355,10 @@ function! CopyMatches(reg)
 endfunction
 command! -register CopyMatches call CopyMatches(<q-reg>)
 "}}}
-
 "Format Math and Text TeX{{{
 function! FormatText()
-  %s/, /, /ge | %s/,  /, /ge
+  %s/, /, /ge
+  %s/,  /, /ge
   %s/\s\+$//ge
   %s/\(\w\)\n\(\\begin{.*}\)/\1\2/ge
   %s/\(\\end{.*}\)\n\(\w\)/\1\2/ge
@@ -378,11 +366,18 @@ function! FormatText()
   %s/\s\+\(\(\\\)\?\(right\)\?[)}\]]\)/\1/ge
 endfunction
 "}}}
-
 " Markdown -> Pandoc -> LaTeX -> PDF{{{
 function! PandocToPDF()
   silent execute '!pandoc -f markdown -t pdf % -o ' . expand('%:r') . '.pdf'
   silent execute '!mupdf ' . expand('%:r') . '.pdf'
 endfunction
 "}}}
+"}}}
+"Abbreviations{{{
+cabbrev Init ~/AppData/Local/nvim/init.vim<CR>
+cabbrev Todo find todo.txt<CR>
+"Put hour
+cabbrev time put =strftime('%H:%M')<CR>
+"Put date
+cabbrev date put =strftime('%d de %b del %Y')<CR>
 "}}}
