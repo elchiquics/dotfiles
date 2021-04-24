@@ -1,0 +1,17 @@
+ " Behave as native vim
+ bind / fillcmdline find
+ bind ? fillcmdline find -?
+ bind n findnext 1
+ bind N findnext -1
+ bind ,<Space> nohlsearch
+ 
+ " Exclude
+ " Reddit
+ " Google Meet
+ blacklistadd https://reddit.com/
+ blacklistadd https://meet.google.com/
+ blacklistadd https://zty.pe/
+
+
+ " Colourscheme
+ colourscheme gruvbox-dark-hard
