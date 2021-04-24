@@ -13,6 +13,5 @@ blacklistadd https://meet.google.com/
 blacklistadd https://zty.pe/
 blacklist add http://music.youtube.com/
 
-
 " Colourscheme
-colourscheme gruvbox-dark-hard
+colourscheme --url https://raw.githubusercontent.com/bezmi/base16-tridactyl/master/base16-gruvbox-dark-hard.css gruvbox-dark-hard
