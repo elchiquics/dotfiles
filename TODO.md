@@ -1,1 +1,2 @@
-- [ ] Create batchfile to setup my config on Windows
+- [X] Create batchfile to setup my config on Windows
+- [ ] Create shell script to setup config on Linux
