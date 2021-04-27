@@ -1,0 +1,5 @@
+||twitter.com^$document
+||instagram.com^$document
+||youtube.com^$document
+||facebook.com^$document
+||reddit.com^$document
