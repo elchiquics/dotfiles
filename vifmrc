@@ -1,0 +1,8 @@
+set number
+set relativenumber
+set incsearch
+set hlsearch
+set ignorecase
+set confirm=
+command! extract 7z x %c
+filetype *.pdf mupdf %f &
