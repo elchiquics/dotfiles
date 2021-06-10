@@ -4,6 +4,10 @@ bind ? fillcmdline find -?
 bind n findnext 1
 bind N findnext -1
 bind ,<Space> nohlsearch
+"Mute and Pin tabs
+bind gp pin
+bind gm mute
+bind gM unmute
 
 " Exclude
 " Reddit
