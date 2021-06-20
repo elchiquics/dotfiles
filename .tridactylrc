@@ -8,11 +8,13 @@ bind ,<Space> nohlsearch
 bind gp pin
 bind gm mute
 bind gM unmute
+bind + zoom 150%
+bind - zoom 100%
 
 " Exclude
 " Reddit
 " Google Meet
-blacklistadd https://reddit.com/
+" blacklistadd https://reddit.com/
 blacklistadd https://meet.google.com/
 blacklistadd https://zty.pe/
 blacklist add http://music.youtube.com/
